@@ -71,7 +71,7 @@ def fill_in_missing_populations(data_frame, df_population, df_age_statistics):
                                               * added_total_pop['total_population'][mask]
 
     # drop total population column and fraction_pop columns
-    # added_total_pop.drop(columns=['fraction_pop', 'total_population'], inplace=True)
+    added_total_pop.drop(columns=['fraction_pop', 'total_population'], inplace=True)
 
     return added_total_pop
 
