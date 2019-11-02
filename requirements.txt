@@ -2,8 +2,8 @@
 -e .
 
 pandas
-plotly==3.10.0
-cufflinks
+plotly
+pycountry
 
 # external requirements
 click
