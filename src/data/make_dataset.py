@@ -8,11 +8,13 @@ from pathlib import Path
 from dotenv import find_dotenv, load_dotenv
 import pandas as pd
 import os
+from src.data import add_country_codes
 
 INPUT_FILE = './data/raw/who_suicide_statistics.csv'
 POPULATION_FILE = './data/raw/total_pop_1960_2018.csv'
 META_DATA = './data/raw/meta_data.csv'
 PROCESSED_FILE = './data/processed/enriched_df.csv'
+CHOROPLETH_DATA_FILE = './data/processed/choropleth_df.csv'
 
 
 def add_age_group_fractions(data_frame):
@@ -67,13 +69,39 @@ def fill_in_missing_populations(data_frame, df_population, df_age_statistics):
     # now replace any missing values in population with the product of total population and fraction in age group
     mask = added_total_pop['population'].isnull()
 
-    added_total_pop.loc[mask, 'population'] = added_total_pop['fraction_pop'][mask] \
-                                              * added_total_pop['total_population'][mask]
+    added_total_pop.loc[mask, 'population'] = \
+        added_total_pop['fraction_pop'][mask] * added_total_pop['total_population'][mask]
 
     # drop total population column and fraction_pop columns
     added_total_pop.drop(columns=['fraction_pop', 'total_population'], inplace=True)
 
     return added_total_pop
+
+
+def prepare_data_for_choropleth(enriched_df):
+    """
+    Prepare data for our choropleth world map plot of suicide statistics. We don't care about age groups here, we just
+    want to show the total number of suicides per year per country. An alpha-3 country code needs to be added to
+    be able to use the choropleth plot. Also we re-format some columns so that the plot looks nicer
+    :param enriched_df: pd dataframe, our enriched data, so already applied some transformations on the raw data
+    :return: pd dataframe
+    """
+    df_suicides = enriched_df.copy()
+
+    # total number of suicides per year per sex per country (so summing over different age groups)
+    df_suicides = df_suicides.groupby(['year', 'sex', 'country']).sum().reset_index()
+    df_suicides['suicides per 100,000'] = df_suicides['suicides_no'] / df_suicides['population'] * 100000
+
+    # little data in 2015 and 2016, drop them for plotting purposes
+    df_suicides = df_suicides[df_suicides["year"] < 2015]
+
+    # for choropleth hover option, better to use scientific notation / few decimals
+    df_suicides["suicides per 100,000"] = df_suicides['suicides per 100,000'].apply(lambda x: "%.2f" % x).astype(float)
+
+    # add alpha-3 country codes for choropleth
+    df_suicides["code"] = df_suicides["country"].apply(add_country_codes.get_alpha3_code)
+
+    return df_suicides
 
 
 @click.command()
@@ -96,7 +124,12 @@ def main():
 
     logger.info(f'saving enriched dataframe to {PROCESSED_FILE}')
     enriched_df.to_csv(PROCESSED_FILE, index=False)
-    logger.info('saved dataframe')
+    logger.info('saved enriched dataframe')
+
+    logger.info(f"Creating data for choropleth plot, saving to {CHOROPLETH_DATA_FILE}")
+    choropleth_df = prepare_data_for_choropleth(enriched_df)
+    choropleth_df.to_csv(CHOROPLETH_DATA_FILE, index=False)
+    logger.info('saved choropleth dataframe')
 
 
 if __name__ == '__main__':
