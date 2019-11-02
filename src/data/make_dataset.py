@@ -7,6 +7,7 @@ import logging
 from pathlib import Path
 from dotenv import find_dotenv, load_dotenv
 import pandas as pd
+import numpy as np
 import os
 from src.data import add_country_codes
 
@@ -90,6 +91,7 @@ def prepare_data_for_choropleth(enriched_df):
 
     # total number of suicides per year per sex per country (so summing over different age groups)
     df_suicides = df_suicides.groupby(['year', 'sex', 'country']).sum().reset_index()
+    df_suicides.loc[df_suicides["population"] == 0, "population"] = np.nan  # otherwise get inf for suicide rate
     df_suicides['suicides per 100,000'] = df_suicides['suicides_no'] / df_suicides['population'] * 100000
 
     # little data in 2015 and 2016, drop them for plotting purposes
