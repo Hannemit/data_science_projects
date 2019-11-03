@@ -16,6 +16,7 @@ POPULATION_FILE = './data/raw/total_pop_1960_2018.csv'
 META_DATA = './data/raw/meta_data.csv'
 PROCESSED_FILE = './data/processed/enriched_df.csv'
 CHOROPLETH_DATA_FILE = './data/processed/choropleth_df.csv'
+CLEANED_META_DATA_FILE = './data/processed/cleaned_meta.csv'
 
 
 def add_age_group_fractions(data_frame):
@@ -106,6 +107,13 @@ def prepare_data_for_choropleth(enriched_df):
     return df_suicides
 
 
+def clean_meta_data(meta_data_frame):
+    meta = meta_data_frame.loc[:, ~meta_data_frame.columns.str.contains('^Unnamed')]
+    meta = meta.rename(columns={"Country Code": "code", "Region": "region", "IncomeGroup": "income"})
+    meta = meta.drop(columns=["SpecialNotes", "TableName"])
+    return meta
+
+
 @click.command()
 def main():
     """ Runs data processing scripts to turn raw data from (../raw) into
@@ -118,15 +126,22 @@ def main():
     logger.info('reading in data...')
     df = pd.read_csv(INPUT_FILE)
     df_population = pd.read_csv(POPULATION_FILE, skiprows=4)
+    meta_data = pd.read_csv(META_DATA)
 
     logger.info('processing data...')
     age_stats = get_age_group_stats(add_age_group_fractions(df))
     df_pop = clean_population_stats(df_population)
     enriched_df = fill_in_missing_populations(df, df_pop, age_stats)
+    meta = clean_meta_data(meta_data)
 
     logger.info(f'saving enriched dataframe to {PROCESSED_FILE}')
     enriched_df.to_csv(PROCESSED_FILE, index=False)
     logger.info('saved enriched dataframe')
+
+    logger.info(f'saving cleaned meta data to {CLEANED_META_DATA_FILE}')
+    meta.to_csv(CLEANED_META_DATA_FILE, index=False)
+    logger.info('saved cleaned meta data')
+
 
     logger.info(f"Creating data for choropleth plot, saving to {CHOROPLETH_DATA_FILE}")
     choropleth_df = prepare_data_for_choropleth(enriched_df)
