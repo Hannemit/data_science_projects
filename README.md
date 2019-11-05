@@ -1,7 +1,7 @@
 Suicide statistics
 ==============================
 
-In this project, we analyse data from WHO (**provide link**) on suicide statistics from 1985 to roughly 2014, for about 140 countries. The analysis is done in a set of notebooks, each prepended with a number (1 to 4), wich do the following:
+In this project, we analyse data from WHO (**provide link**) on suicide statistics from 1985 to roughly 2014, for about 140 countries. The analysis is done in a set of notebooks, each prepended with a number (1 to 4), which do the following:
 1. some initial exploration of the data (missing values, combining with other datasets ..), which led to the functions now in src/data/make_dataset.py
 2. creating graphs and tables showing suicide statistics. 
 3. creating interactive world maps (made with plotly) showing suicides rates per country over a range of years 
