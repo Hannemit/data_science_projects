@@ -95,3 +95,4 @@ Besides fusing two datasets together, in make_dataset.py I enrich the dataset wi
 TODO
 ==============================
 * remove folders/files I'm not using
+* update requirements.txt and check whether it actually works
