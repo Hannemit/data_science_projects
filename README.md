@@ -81,7 +81,7 @@ Data used
 ==============================
 **Specify which data I used**
 
-### src/data/make_dataset.py
+#### src/data/make_dataset.py
 As is shown in notebook (1), there are quite a lot of missing values for the population size of the countries in the suicide dataset. The suicide dataset provides population sizes for different age ranges (e.g. the number of people in France in the 5-14 age range, in the 14-25 age range, etc..). It was a bit hard to find population data for these specific age ranges elsewhere, so instead I used <insert data source> which has data on the total population size per country. I calculated the average population fractions of each of the age groups (using the countries in <suicide data> that **did** have age-specific population sizes), and used these averages to infer the age-specific population sizes of the countries where these values were originally missing (using their total population sizes from <population_data>.
     
 Besides fusing two datasets together, in make_dataset.py I enrich the dataset with some new columns and clean up the data, e.g.
