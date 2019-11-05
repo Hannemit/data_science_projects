@@ -1,11 +1,14 @@
-data science projects
-The project structure was made by running cookiecutter https://github.com/drivendata/cookiecutter-data-science
+Suicide statistics
 ==============================
 
-A collection of data science projects
+In this project, we analyse data from WHO (**provide link**) on suicide statistics from 1985 to roughly 2014, for about 140 countries. The analysis is done in a set of notebooks, each prepended with a number (1 to 4), wich do the following:
+1. some initial exploration of the data (missing values, combining with other datasets ..), which led to the functions now in src/data/make_dataset.py
+2. creating graphs and tables showing suicide statistics. 
+3. creating interactive world maps (made with plotly) showing suicides rates per country over a range of years 
+4. correlating suicide statistics with other statistics related to the countries, such as levels of happiness, economic factors, etc.. 
 
 Project Organization
-------------
+=========================
 
     ├── LICENSE
     ├── Makefile           <- Makefile with commands like `make data` or `make train`
@@ -57,7 +60,28 @@ Project Organization
 
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
 
-run 
-pip install --editable . 
+Requirements
+=================
+Requirements are outlined in requirements.txt
 
-to be able to import src anywhere in the project
+
+How to use
+=================
+
+* run the following command to be able to import src anywhere in the project:
+    pip install -e . 
+* make sure the requirements in requirements.txt are installed
+* run make_dataset.py in src/data. This will read in the raw data in data/raw, process it, and save it in data/processed. These processed data files are used in the notebooks
+* we're now ready to run the notebooks! 
+
+
+
+
+Data used
+==============================
+**Specify which data I used**
+
+
+TODO
+==============================
+* remove folders/files I'm not using
