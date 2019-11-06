@@ -81,6 +81,7 @@ target/
 !/data/raw/
 !/data/processed/
 /data/processed/*
+!/data/processed/.gitkeep
 /data/raw/*
 !/data/raw/*.zip
 
