@@ -62,7 +62,20 @@ Project Organization
 
 Requirements
 =================
-Requirements are outlined in requirements.txt
+
+## Windows
+First, create a virtual environment with conda.
+`conda create -n my_env python=3.7.4 numpy==1.17.2 scipy==1.3.1`
+
+then install the requirements
+`pip install -r requirements.txt`
+
+## Linux
+Create the virual environment
+`conda create -n my_env python=3.7.4`
+
+and install the requirements
+`pip install -r requirements.txt`
 
 
 How to use
