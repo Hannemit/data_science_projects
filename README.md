@@ -84,7 +84,7 @@ How to use
 * run the following command to be able to import src anywhere in the project:
     `pip install -e .` 
 * unzip the zip file in data/raw/
-* run make_dataset.py in src/data. This will read in the raw data in data/raw, process it, and save it in data/processed. These processed data files are used in the notebooks
+* run `python src/data/make_dataset.py` from the root directory. This will read in the raw data in data/raw, process it, and save it in data/processed. These processed data files are used in the notebooks
 * we're now ready to run the notebooks! 
 
 
