@@ -83,6 +83,7 @@ How to use
 * make sure the requirements in requirements.txt are installed (see above)
 * run the following command to be able to import src anywhere in the project:
     `pip install -e .` 
+* run `python -m ipykernel install --user --name my_env --display-name "Python (my_env)"` to be able to easily use the virtual environment in a jupyter notebook
 * unzip the zip file in data/raw/
 * run `python src/data/make_dataset.py` from the root directory. This will read in the raw data in data/raw, process it, and save it in data/processed. These processed data files are used in the notebooks
 * we're now ready to run the notebooks! 
