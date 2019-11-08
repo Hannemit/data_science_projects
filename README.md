@@ -3,7 +3,7 @@ Suicide statistics
 
 In this project, we analyse data from WHO on suicide statistics from 1985 to roughly 2014, for about 140 countries. The analysis is done in a set of notebooks, each prepended with a number (1 to 4), which do the following:
 1. some initial exploration of the data (missing values, combining with other datasets ..), which led to the functions now in src/data/make_dataset.py
-2. creating graphs and tables showing suicide statistics. 
+2. creating graphs and tables showing suicide statistics
 3. creating interactive world maps (made with plotly) showing suicides rates per country over a range of years 
 4. correlating suicide statistics with other statistics related to the countries, such as levels of happiness, economic factors, etc.. 
 
@@ -86,24 +86,23 @@ How to use
 * run `python -m ipykernel install --user --name my_env --display-name "Python (my_env)"` to be able to easily use the virtual environment in a jupyter notebook
 * unzip the zip file in data/raw/
 * run `python src/data/make_dataset.py` from the root directory. This will read in the raw data in data/raw, process it, and save it in data/processed. These processed data files are used in the notebooks
-* we're ready to run the notebooks! From within the virtual environment, just run `jupyter notebook` and this will open a web browser. The notebooks in `/notebooks/` can now be opened and run. 
+* we're ready to run the notebooks! From within the virtual environment, just run `jupyter notebook` and this will open a web browser. The notebooks in `/notebooks/` can now be opened and run
 
 
 
 
 Data used
 ==============================
-* who_suicide_statistics.csv [[Szamil]. (2017). Suicide in the Twenty-First Century [dataset]. Retrieved from [https://www.kaggle.com/szamil/suicide-in-the-twenty-first-century/notebook]
-* total_pop_1960_2018.csv and meta_data.csv [https://data.worldbank.org/indicator/SP.POP.TOTL?view=map]
+* `who_suicide_statistics.csv` [[Szamil]. (2017). Suicide in the Twenty-First Century [dataset]. Retrieved from [https://www.kaggle.com/szamil/suicide-in-the-twenty-first-century/notebook]
+* `total_pop_1960_2018.csv` and `meta_data.csv` [https://data.worldbank.org/indicator/SP.POP.TOTL?view=map]
 
 #### src/data/make_dataset.py
-As is shown in notebook (1), there are quite a lot of missing values for the population size of the countries in the suicide dataset. The suicide dataset provides population sizes for different age ranges (e.g. the number of people in France in the 5-14 age range, in the 14-25 age range, etc..). It was a bit hard to find population data for these specific age ranges elsewhere, so instead I used <insert data source> which has data on the total population size per country. I calculated the average population fractions of each of the age groups (using the countries in <suicide data> that did have age-specific population sizes), and used these averages to infer the age-specific population sizes of the countries where these values were originally missing (using their total population sizes from <population_data>.
+As is shown in notebook (1), there are quite a lot of missing values for the population size of the countries in the suicide dataset. The suicide dataset provides population sizes for different age ranges (e.g. the number of people in France in the 5-14 age range, in the 14-25 age range, etc..). It was a bit hard to find population data for these specific age ranges elsewhere, so instead I used total_pop_1960_2018.csv which has data on the total population size per country. I calculated the average population fractions of each of the age groups (using the countries in who_suicide_statistics.csv that did have age-specific population sizes), and used these averages to infer the age-specific population sizes of the countries where these values were originally missing (using their total population sizes from total_pop_1960_2018.csv.
     
-Besides fusing two datasets together, in make_dataset.py I enrich the dataset with some new columns and clean up the data, e.g.
+Besides fusing two datasets together, in `make_dataset.py` I enrich the dataset with some new columns and clean up the data, e.g.
 * add column with the alpha_3 country code (e.g. FRA for France), which is required for choropleth plots in plotly
 * the suicide rate per 100,000 people (the original data only contains absolute numbers)
 * in some of the processed datasets I removed the years 2015 and 2016 because they contained very little data
-* 
 
 
 
