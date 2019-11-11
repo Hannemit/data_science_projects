@@ -63,18 +63,22 @@ Project Organization
 Requirements
 =================
 
-## Windows
-First, create a virtual environment with conda
+## First, create a virtual environment:
+
+#### Windows
+First, create a virtual environment with conda  
 `conda create -n my_env python=3.7.4 numpy==1.17.2 scipy==1.3.1`
 
-then install the requirements (`cd` into `data_science_projects` and run the command below) 
-`pip install -r requirements.txt`
-
-## Linux
-Create the virual environment
+#### Linux
+Create the virual environment  
 `conda create -n my_env python=3.7.4`
 
-and install the requirements (`cd` into `data_science_projects` and run the command below) 
+## Then install the requirements
+
+Activate the virtual environment with  
+`conda activate my_env`  
+
+then `cd` into `data_science_projects` and run the command below  
 `pip install -r requirements.txt`
 
 
