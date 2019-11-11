@@ -86,7 +86,7 @@ and install the requirements by running
 
 How to use
 =================
-* make sure the requirements in requirements.txt are installed (see above)
+* make sure the requirements in requirements.txt are installed (see above) and the virtual environment is activated
 * run the following command to be able to import src anywhere in the project:
     `pip install -e .` 
 * run `python -m ipykernel install --user --name my_env --display-name "Python (my_env)"` to be able to easily use the virtual environment in a jupyter notebook
