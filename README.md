@@ -75,10 +75,12 @@ Create the virual environment
 
 ## Then install the requirements
 
-Activate the virtual environment with  
+then `cd` into `data_science_projects`, activate the virtual environment with  
+ 
 `conda activate my_env`  
 
-then `cd` into `data_science_projects` and run the command below  
+and install the requirements by running    
+
 `pip install -r requirements.txt`
 
 
