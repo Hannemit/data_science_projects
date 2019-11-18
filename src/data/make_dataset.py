@@ -109,27 +109,31 @@ def make_df_nicer_format(data_frame):
     df = data_frame.copy()
 
     # create a column with no duplicates, so that we can use df.pivot with this column as index.
-    df["year_country"] = df["year"].map(str) + "_" + df["country"]
+    df["year_country_code"] = df["year"].map(str) + "_" + df["country"] + "_" + df["code"]
 
-    suicide_rate_by_sex = df.pivot(index="year_country", columns="sex", values="suicides per 100,000").reset_index()
-    population_by_sex = df.pivot(index="year_country", columns="sex", values="population").reset_index()
-    suicide_num_by_sex = df.pivot(index="year_country", columns="sex", values="suicides_no").reset_index()
+    suic_rate_by_sex = df.pivot(index="year_country_code", columns="sex", values="suicides per 100,000").reset_index()
+    population_by_sex = df.pivot(index="year_country_code", columns="sex", values="population").reset_index()
+    suicide_num_by_sex = df.pivot(index="year_country_code", columns="sex", values="suicides_no").reset_index()
 
-    combined = pd.merge(suicide_rate_by_sex, population_by_sex, on="year_country", suffixes=("_rate", "_pop"))
-    combined = pd.merge(combined, suicide_num_by_sex, on="year_country")
+    combined = pd.merge(suic_rate_by_sex, population_by_sex, on="year_country_code", suffixes=("_rate", "_pop"))
+    combined = pd.merge(combined, suicide_num_by_sex, on="year_country_code")
     combined = combined.rename(columns={"female": "suicide_num_f", "male": "suicide_num_m"})
 
     # get year and country columns back
-    combined["split"] = combined["year_country"].str.split('_')
-    combined[['year', 'country']] = pd.DataFrame(combined.split.values.tolist())
+    combined["split"] = combined["year_country_code"].str.split('_')
+    combined[["year", "country", "code"]] = pd.DataFrame(combined.split.values.tolist())
 
-    combined = combined.drop(columns=["year_country", "split"], axis=1)
+    combined = combined.drop(columns=["year_country_code", "split"], axis=1)
     del combined.index.name
     combined.loc[combined["female_pop"] == 0, "female_pop"] = np.nan
     combined.loc[combined["male_pop"] == 0, "male_pop"] = np.nan
 
     combined["overall_rate"] = (combined["suicide_num_f"] + combined["suicide_num_m"]) / (
                 combined["female_pop"] + combined["male_pop"]) * 100000
+
+    # add some extra columns for convenience
+    combined["population"] = combined["female_pop"] + combined["male_pop"]
+    combined["suicides_no"] = combined["suicide_num_f"] + combined["suicide_num_m"]
 
     return combined
 
