@@ -42,6 +42,14 @@ def add_age_group_fractions(data_frame):
 
 
 def get_age_group_stats(data_frame):
+    """
+    We want to know, for each of our age groups (we have 6 of them, for both males and females), what fraction of the
+    total population they form. E.g., on average the 20-35 female age group may form 7% of the total population size.
+    We return a dataframe of length 12 containing the average (averaged over different countries and years) population
+    size fraction of our age-sex groups.
+    :param data_frame: pandas dataframe
+    :return: pandas dataframe of length 12
+    """
     assert "fraction_pop" in data_frame, "dataframe needs to have column fraction_pop"
     assert data_frame["fraction_pop"].isna().sum() == 0, "there are nans in dataframe.."
 
@@ -65,8 +73,17 @@ def clean_population_stats(data_frame):
     return df_pop
 
 
-def fill_in_missing_populations(data_frame, df_population, df_age_statistics):
-    added_age_stats = pd.merge(data_frame, df_age_statistics, how="left", on=["sex", "age"])
+def fill_in_missing_populations(suicide_df, df_population, df_age_statistics):
+    """
+    Some population values were missing in the original suicide dataset (suicide_df), we fill in some of them with
+    data obtained from df_population (containing population sizes for a range of countries). More details are provided
+    in the readme.
+    :param suicide_df: pandas dataframe, WHO suicide statistics
+    :param df_population: pandas dataframe with population statistics per country per year
+    :param df_age_statistics: pandas dataframe, relative population size (out of total) in a set of age groups
+    :return: pandas dataframe, missing population values imputed
+    """
+    added_age_stats = pd.merge(suicide_df, df_age_statistics, how="left", on=["sex", "age"])
     added_total_pop = pd.merge(added_age_stats, df_population, how="left", on=["country", "year"])
 
     # now replace any missing values in population with the product of total population and fraction in age group
@@ -126,6 +143,9 @@ def prepare_data_for_choropleth(enriched_df):
     :return: pd dataframe
     """
     df_suicides = enriched_df.copy()
+
+    # drop all rows which have nans, it might happen that the population is Nan but suicides_no is not
+    df_suicides = df_suicides.dropna(how="any")
 
     # total number of suicides per year per sex per country (so summing over different age groups)
     df_suicides = df_suicides.groupby(["year", "sex", "country"]).sum().reset_index()
