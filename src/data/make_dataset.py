@@ -140,6 +140,8 @@ def make_df_nicer_format(data_frame):
 
 def prepare_data_for_choropleth(enriched_df):
     """
+    TODO: I'm not really using the output dataframe of this function anymore, combine this function with the one above
+        here.
     Prepare data for our choropleth world map plot of suicide statistics. We don't care about age groups here, we just
     want to show the total number of suicides per year per country. An alpha-3 country code needs to be added to
     be able to use the choropleth plot. Also we re-format some columns so that the plot looks nicer
