@@ -85,6 +85,10 @@ target/
 /data/raw/*
 !/data/raw/*.zip
 
+# exclude figure folder but not figures
+!/notebooks/figures/
+/notebooks/figures/*
+
 # Mac OS-specific storage files
 .DS_Store
 
