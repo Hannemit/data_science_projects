@@ -40,3 +40,29 @@ def test_make_df_nicer_format():
                                   "suicide_num_m": "suicides_no",
                                   "male_pop": "population"})
     pd.testing.assert_frame_equal(left.sort_index(axis=1), right.sort_index(axis=1))
+
+
+def test_prepare_data_for_choropleth():
+    try:
+        df_choropleth = pd.read_csv(CHOROPLETH_DATA_FILE)
+    except FileNotFoundError:
+        raise FileNotFoundError("Before running this test, run make_dataset.py to create our processed datafiles")
+
+    both = df_choropleth.groupby(['year', 'country']).agg(population=pd.NamedAgg(column="population", aggfunc=sum),
+                                                          suicides_no=pd.NamedAgg(column="suicides_no", aggfunc=sum),
+                                                          code=pd.NamedAgg(column="code", aggfunc=lambda x: x[0]),
+                                                          ).reset_index()
+    females = df_choropleth[df_choropleth["sex"] == "female"]
+    males = df_choropleth[df_choropleth["sex"] == "male"]
+    both["suicides per 100,000"] = both['suicides_no'] / both['population'] * 100000
+
+    # pick some random countries and check that male and female population add up to total population
+    countries = df_choropleth["country"].unique()
+
+    for country in countries[:50]:
+        female_pop = females.loc[(females["country"] == country) & (females["year"] == 1992), "population"].values
+        if len(female_pop) == 0:
+            continue  # might not have data for this country in the specific year we're looking at
+        male_pop = males.loc[(males["country"] == country) & (males["year"] == 1992), "population"].values
+        combined_pop = both.loc[(both["country"] == country) & (both["year"] == 1992), "population"].values
+        assert combined_pop == female_pop + male_pop
