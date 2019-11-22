@@ -84,6 +84,7 @@ target/
 !/data/processed/.gitkeep
 /data/raw/*
 !/data/raw/*.zip
+!/data/raw/asia_sunshine.txt
 
 # exclude figure folder but not figures
 !/notebooks/figures/
