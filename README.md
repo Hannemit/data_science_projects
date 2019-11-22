@@ -20,7 +20,15 @@ To answer these questions we first had to clean the data, more details on that a
 3. In general, the older you get the higher your suicide rate. However, these claims are not true on a per-country basis, in some countries middle-aged people are a lot more likely to commit suicide than old people. 
 4. There are a lot of things to look at in this data and I found myself constantly wondering "ah, but what does this look like for this country? And what about this other country?" I therefore decided that interactive plots are very useful here, with e.g. a dropdown to select different countries. I made a few interactive plots (some of which are shown below).  
 
+
 ![Alt text](./notebooks/figures/highest_rates.png?raw=true "Countries with highest overall rate")
+
+
+![Alt text](./reports/figures/interactive_age.png?raw=true "")
+
+
+![Alt text](./reports/figures/interactive_worldmap.png?raw=true "")
+
 
 
 Project Organization
