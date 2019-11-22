@@ -89,6 +89,7 @@ target/
 # exclude figure folder but not figures
 !/notebooks/figures/
 /notebooks/figures/*
+!/notebooks/figures/highest_rates.png
 
 # Mac OS-specific storage files
 .DS_Store
