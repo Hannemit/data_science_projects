@@ -1,6 +1,6 @@
 import pandas as pd
-from src.data.make_dataset import CHOROPLETH_DATA_FILE, CONVENIENT_DATA_FILE
-import src.data.make_dataset as make_dataset
+CHOROPLETH_FILE = "./tests/data/choropleth_df.csv"
+CONVENIENT_FILE = "./tests/data/year_country_data.csv"
 
 
 def test_make_df_nicer_format():
@@ -11,13 +11,11 @@ def test_make_df_nicer_format():
     """
 
     try:
-        df_choropleth = pd.read_csv(CHOROPLETH_DATA_FILE)
-        df_convenient = pd.read_csv(CONVENIENT_DATA_FILE)
+        df_choropleth = pd.read_csv(CHOROPLETH_FILE)
+        df_convenient = pd.read_csv(CONVENIENT_FILE)
     except FileNotFoundError:
-        make_dataset.main()
-        df_choropleth = pd.read_csv(CHOROPLETH_DATA_FILE)
-        df_convenient = pd.read_csv(CONVENIENT_DATA_FILE)
-        # raise FileNotFoundError("Before running this test, run make_dataset.py to create our processed datafiles")
+        raise FileNotFoundError("Before running this test, make sure the data files are there.. these are the same ones"
+                                "that are created from running the make_dataset.py file")
 
     both = df_choropleth.groupby(['year', 'country']).agg(population=pd.NamedAgg(column="population", aggfunc=sum),
                                                           suicides_no=pd.NamedAgg(column="suicides_no", aggfunc=sum),
@@ -48,7 +46,7 @@ def test_make_df_nicer_format():
 
 def test_prepare_data_for_choropleth():
     try:
-        df_choropleth = pd.read_csv(CHOROPLETH_DATA_FILE)
+        df_choropleth = pd.read_csv(CHOROPLETH_FILE)
     except FileNotFoundError:
 
         raise FileNotFoundError("Before running this test, run make_dataset.py to create our processed datafiles")
