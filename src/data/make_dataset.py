@@ -21,6 +21,14 @@ CONVENIENT_DATA_FILE = "./data/processed/year_country_data.csv"
 
 
 def add_age_group_fractions(data_frame):
+    """
+    Calculate, for each of our 12 age groups, the fraction they represent of the total population size. E.g. the
+    0-5 year old group may represent 0.04 of the total population. We only do this for the countries for which we
+    have population data (i.e. where the population data is not nan), so that later on we can calculate the average
+    age distribution (averaged over the age distributions from different countries).
+    :param data_frame: pandas dataframe
+    :return: pandas dataframe with some nan rows dropped and an extra fraction_pop column
+    """
     assert "year" in data_frame, "year column must be in dataframe"
     assert "country" in data_frame, "country column must be in dataframe"
 
@@ -64,6 +72,11 @@ def get_age_group_stats(data_frame):
 
 
 def clean_population_stats(data_frame):
+    """
+    Clean our population dataframe. Rename some columns, drop some columns etc..
+    :param data_frame: population dataframe
+    :return: pandas dataframe, cleaned
+    """
     df_pop = data_frame.drop(["Country Code", "Indicator Name", "Indicator Code", "Unnamed: 63"], axis=1)
     df_pop = df_pop.rename(columns={"Country Name": "country"})
     df_pop = df_pop.melt(id_vars=["country"], var_name="year", value_name="total_population")
@@ -171,6 +184,11 @@ def prepare_data_for_choropleth(enriched_df):
 
 
 def clean_meta_data(meta_data_frame):
+    """
+    Clean the meta data we have. Remove an unnamed column, rename some other columns, drop some columns
+    :param meta_data_frame: pd dataframe
+    :return: cleaned pd dataframe
+    """
     meta = meta_data_frame.loc[:, ~meta_data_frame.columns.str.contains("^Unnamed")]
     meta = meta.rename(columns={"Country Code": "code", "Region": "region", "IncomeGroup": "income"})
     meta = meta.drop(columns=["SpecialNotes", "TableName"])
