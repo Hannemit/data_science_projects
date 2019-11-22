@@ -1,6 +1,8 @@
 Suicide statistics
 ==============================
 
+This project is part of a Udacity data science nanodegree. We had the freedom to choose our own dataset to work with, and I decided to use suicide statistics because I find it very interesting to see which countries have high suicide rates and what might cause these high rates. 
+
 In this project, we analyse data from WHO on suicide statistics from 1980 to roughly 2014, for about 140 countries. The analysis is done in a set of notebooks in `/notebooks/`, each prepended with a number (1 to 4), which do the following:
 * `1_data_enrichment` some initial exploration of the data (missing values, combining with other datasets ..), which led to the functions now in src/data/make_dataset.py  
 * `2_data_exploration` creating graphs and tables showing suicide statistics  
