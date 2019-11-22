@@ -84,6 +84,12 @@ target/
 !/data/processed/.gitkeep
 /data/raw/*
 !/data/raw/*.zip
+!/data/raw/asia_sunshine.txt
+
+# exclude figure folder but not figures
+!/notebooks/figures/
+/notebooks/figures/*
+!/notebooks/figures/highest_rates.png
 
 # Mac OS-specific storage files
 .DS_Store
